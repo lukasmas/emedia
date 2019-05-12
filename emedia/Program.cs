@@ -6,7 +6,9 @@ namespace emedia
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //C:/ Users / Lukas / Desktop / IO.png
+            FileDecryptor.ProcessPNG("test.png");
+            System.Console.ReadKey();
         }
     }
 }
