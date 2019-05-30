@@ -30,7 +30,7 @@ namespace emedia
         public static void PrintWav()
         {
             Console.WriteLine("WAV HEADER:");
-            Console.WriteLine("RIFF: " +  wav.RIFF);
+            Console.WriteLine("RIFF: " + wav.RIFF);
             Console.WriteLine("fileSize: " + wav.fileSize);
             Console.WriteLine("WAVE: " + wav.WAVE);
             Console.WriteLine("fmt: " + wav.fmt);
@@ -45,7 +45,8 @@ namespace emedia
             Console.WriteLine("sizeOfData: " + wav.sizeOfData);
         }
 
-        public static int ReadBytes_LittleEndian(ref FileStream file, int size) {
+        public static int ReadBytes_LittleEndian(ref FileStream file, int size)
+        {
             var temp = 0;
             for (int i = 0; i < size; i++)
             {
@@ -101,7 +102,7 @@ namespace emedia
             wav.bitPerSample = ReadBytes_LittleEndian(ref fileStream, 4);
             wav.data = ReadBytesToString_BigEndian(ref fileStream, 4);
             wav.sizeOfData = ReadBytes_LittleEndian(ref fileStream, 4);
-            
+
             PrintWav();
 
             for (int i = 0; i < samples.Length; i++)
@@ -110,7 +111,7 @@ namespace emedia
             }
             fileStream.Close();
 
-            using(StreamWriter outputFile = new StreamWriter(Path.Combine("samples.dat")))
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine("samples.dat")))
             {
 
                 for (int i = 0; i < samples.Length; i++)
@@ -145,7 +146,7 @@ namespace emedia
 
             return true;
         }
-        
+
         public static void ProcessPNG(string path)
         {
             bool foundIHDR = false;
@@ -187,7 +188,7 @@ namespace emedia
                 for (int i = 0; i < 4; i++)
                 {
                     int pow = 8 - (2 * (i + 1));
-                    width += Convert.ToInt32(fileStream.ReadByte()) * (int)Math.Pow(16,pow);
+                    width += Convert.ToInt32(fileStream.ReadByte()) * (int)Math.Pow(16, pow);
                 }
                 for (int i = 0; i < 4; i++)
                 {
@@ -209,9 +210,9 @@ namespace emedia
                 Console.WriteLine("Interlace method: " + interlaceMethod.ToString());
                 fileStream.Close();
             }
-            
+
         }
 
-        
+
     }
 }
