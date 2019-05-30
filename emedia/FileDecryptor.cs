@@ -64,22 +64,24 @@ namespace emedia
             return temp;
         }
 
-        public static Complex[] computeDft(Complex[] input)
+        public static Complex[] CalculateDFT(Complex[] samples)
         {
-            int n = input.Length;
-            Complex[] output = new Complex[n];
-            for (int k = 0; k < n; k++)
-            {  // For each output element
+            int N = samples.Length;
+            Complex[] result = new Complex[N];
+            for (int k = 0; k < N; k++)
+            {
                 Complex sum = 0;
-                for (int t = 0; t < n; t++)
-                {  // For each input element
-                    double angle = 2 * Math.PI * t * k / n;
-                    sum += input[t] * Complex.Exp(new Complex(0, -angle));
+                for (int n = 0; n < N; n++)
+                {
+                    double omega = 2 * Math.PI * n * k / N;
+                    sum += samples[n] * Complex.Exp(new Complex(0, -omega));
+
                 }
-                output[k] = sum;
+                result[k] = sum;
             }
-            return output;
+            return result;
         }
+
 
         public static void ProccessWAV(string path)
         {
@@ -107,13 +109,8 @@ namespace emedia
                 samples[i] = ReadBytes_LittleEndian(ref fileStream, 2);
             }
             fileStream.Close();
-            //for (int i = 0; i < samples.Length; i++)
-            //{
-            //    Console.Write(samples[i] + " ");
-            //}
 
-
-            using(StreamWriter outputFile = new StreamWriter(Path.Combine("samples.txt")))
+            using(StreamWriter outputFile = new StreamWriter(Path.Combine("samples.dat")))
             {
 
                 for (int i = 0; i < samples.Length; i++)
@@ -122,19 +119,14 @@ namespace emedia
                 }
             }
 
-            Console.WriteLine(" ");
-            Console.WriteLine(" ");
-            Console.WriteLine(" ");
-            Console.WriteLine(" ");
+            samples = CalculateDFT(samples);
 
-            samples = computeDft(samples);
-
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine("dft.txt")))
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine("dft.dat")))
             {
 
                 for (int i = 0; i < samples.Length; i++)
                 {
-                    outputFile.WriteLine(samples[i].Real + ";" + samples[i].Imaginary);
+                    outputFile.WriteLine(i + "\t" + samples[i].Real + "\t" + samples[i].Imaginary);
                 }
             }
 
