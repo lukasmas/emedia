@@ -13,6 +13,10 @@ namespace emedia
         static void Main(string[] args)
         {
             string path = "media/a2002011001-e02.wav";
+
+            //FileDecryptor.ProcessPNG("C:/path/to/test.png");
+            //Console.WriteLine();
+
             FileDecryptor.ProccessWAV(path);
             GNUPlot(1);
             GNUPlot(2);
@@ -32,7 +36,7 @@ namespace emedia
             }
 
             if (!File.Exists("XOR_key"))
-                RSA.GenerateKey();
+                XOR.GenerateXORKey(FileDecryptor.wav.sizeOfData);
             else
             {
                 string o = string.Empty;
@@ -46,9 +50,9 @@ namespace emedia
                 }
             }
 
-            BigInteger encVal = RSA.Encrypt(983415); //983415
+            BigInteger encVal = RSA.Encrypt(123); //983415
 
-            Console.WriteLine(983415 + " : " + encVal);
+            Console.WriteLine(123 + " : " + encVal);
             Console.WriteLine(encVal + " : " + RSA.Decrypt(encVal));
 
             Console.WriteLine();
@@ -64,6 +68,11 @@ namespace emedia
         private static void GNUPlot(int option)
         {
             string Pgm = @"gnuplot\bin\gnuplot.exe";
+            if (!File.Exists(Pgm))
+            {
+                Console.WriteLine("Brak zainstalowanego gnuplota\nZainstaluj gnuplot i wklej go do katalogu z programem!");
+                return;
+            }
             Process extPro = new Process();
             extPro.StartInfo.FileName = Pgm;
             extPro.StartInfo.UseShellExecute = false;
