@@ -12,10 +12,10 @@ namespace emedia
 
         static void Main(string[] args)
         {
-
-            //FileDecryptor.ProccessWAV("a2002011001-e02.wav");
-            //GNUPlot(1);
-            //GNUPlot(2);
+            string path = "media/a2002011001-e02.wav";
+            FileDecryptor.ProccessWAV(path);
+            GNUPlot(1);
+            GNUPlot(2);
             if (!File.Exists("RSA_priv") && !File.Exists("RSA_pub"))
                 RSA.GenerateKey();
             else
@@ -31,10 +31,32 @@ namespace emedia
                 }
             }
 
-            BigInteger encVal = RSA.Encrypt(123); //983415
+            if (!File.Exists("XOR_key"))
+                RSA.GenerateKey();
+            else
+            {
+                string o = string.Empty;
+                Console.WriteLine("Generate XOR keys one more time? Y/N");
+                o = Console.ReadLine();
+                Console.WriteLine();
 
-            Console.WriteLine(123 + " : " + encVal);
+                if (o[0] == 'y' || o[0] == 'Y')
+                {
+                    XOR.GenerateXORKey(FileDecryptor.wav.sizeOfData);
+                }
+            }
+
+            BigInteger encVal = RSA.Encrypt(983415); //983415
+
+            Console.WriteLine(983415 + " : " + encVal);
             Console.WriteLine(encVal + " : " + RSA.Decrypt(encVal));
+
+            Console.WriteLine();
+            XOR.EncryptData(path, 44, "media/Encrypted.wav");
+            Console.WriteLine("File " + path + " encrypted into \"media/Encrypted.wav\"");
+
+            XOR.DecryptData("media/Encrypted.wav", 44, "media/Decrypted.wav");
+            Console.WriteLine("File \"media/Encrypted.wav\" decrypted into \"media/Decrypted.wav\"");
 
             Console.ReadKey();
         }

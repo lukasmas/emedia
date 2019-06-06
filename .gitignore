@@ -1,3 +1,4 @@
 emedia/bin/*
 emedia/obj/*
+emedia/gnuplot/*
 .vs/*
